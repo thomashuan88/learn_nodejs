@@ -1,0 +1,29 @@
+extends layout
+
+block scripts
+    script(type='text/javascript', src='/js/jquery.js')
+    script(type='text/javascript', src='/socket.io/socket.io.js')
+
+    script(type='text/javascript')
+        
+        var socket = io.connect('http://localhost:8080');
+        socket.on('chat', function(data){
+            $('#chat').append('<p><b>' + data.title + '</b>: ' + data.contents + '</p>');
+        });
+        var submitChat = function(form) {
+            socket.emit('chat', {text: form.find('#chat').val()});
+            return false;
+        };    
+        $(function(){
+            $('form#myform').submit(function(){
+                return submitChat($(this));
+            });
+        });
+
+
+block content
+    div#chat
+
+    form#myform
+        input#chat(name='chat', type='text')
+        input(type='submit', value='Send Chat')
