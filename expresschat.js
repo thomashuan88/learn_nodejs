@@ -20,8 +20,9 @@ app.get('/stooges/chat', function(req,res,next){
     res.render('chat');
 });
 
-app.get('/js/jquery.js', function(req,res,next){
-    res.sendfile(__dirname + '/lib/jquery/jquery-1.9.1.min.js');
+app.get('/js/jquery/:file', function(req,res,next){
+    var filename = req.params.file;
+    res.sendfile(__dirname + '/lib/jquery/' + filename);
 });
 
 io.sockets.on('connection', function(socket){
